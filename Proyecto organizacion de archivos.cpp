@@ -58,7 +58,7 @@ void mostrarNodos(NodoArbol* &arbol) {
         mostrarNodos(arbol -> derecha);
 
     }
-}
+} //Holaaaaaa
 void mostrarPreorden(NodoArbol* &arbol) {
     if (arbol != NULL) {
         //Mostramos la lista en preorden
