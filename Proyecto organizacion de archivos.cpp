@@ -294,154 +294,107 @@ void eliminarMenu() {
 }
 
 int main() {
-    int numeroTelefonico;
-    string email;
-    string nombre;
-    string buscarContacto = NuevoContacto;
-    string Contactoeliminacion;
     int opcion;
-    int opcionOrdenamiento;
-    int BusquedaOrdenada;
+
     do {
-        cout << "1:Agregar contacto\n";
-        cout << "2:Listar contactos\n";
-        cout << "3:Buscar contacto\n";
-        cout << "4:Eliminar contacto\n";
-        cout << "5:Agregrar a cola\n";
-        cout << "6:Transferir a el arreglo principal\n";
-        cout << "7:Mostrar historial\n";
-        cout << "8:Mostrar Arbol\n";
-        cout << "9:Limpiar\n";
-        cout << "10:Salir\n";
-        cout << "Seleccione una opcion:\n";
-        cin >> opcion;
+        // Limpiamos la pantalla (solo si el sistema lo soporta)
+        // system("cls");
+    
+        cout << "\n\n--- MENU PRINCIPAL DE GESTION DE CONTACTOS ---\n";
+        cout << "1: Agregar contacto \n";
+        cout << "2: Listar contactos \n";
+        cout << "3: Buscar contacto \n";
+        cout << "4: Eliminar contacto \n";
+        cout << "5: Agregar a Cola \n";
+        cout << "6: Transferir de Cola a Principal \n";
+        cout << "7: Mostrar Historial \n";
+        cout << "8: Mostrar Arbol de Contactos \n";
+        cout << "9: Salir\n";
+        cout << "Seleccione una opcion: ";
 
-        //limpiamos el buffer de entrada
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        if (opcion == 1) {
-            cout << "Ingrese su nombre completo:\n" << endl;
-            getline(cin, nombre);  //nombres con espacios
-            cout << "Ingrese su Numero de telefono: " << endl;
-            cin >> numeroTelefonico;
-            //limpiamos despuesder de leer el numero de telefono
-             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Ingrese su Email:" << endl;
-            getline(cin, email);  //para email con espacios
-
-            contacto nuevo_contacto;
-            nuevo_contacto.Nombre = nombre;
-            nuevo_contacto.telefono = numeroTelefonico;
-            nuevo_contacto.email = email;
-            cout << "Se agrego con exito el contacto" << endl;
-
-            contactos_pricipales.push_back(nuevo_contacto);
-            pila.push(nuevo_contacto); // agrega a la pila los datos ingresados
-            insertarArbol(arbolcontacto, nuevo_contacto);  //agregar el arbol para que tenga los datos ingresas
-        }
-
-        else if (opcion == 2) {
-            cout << "Opcion ordenamiento:\n"; // Agrego saltos de línea para mejor lectura
-            cout << "1.Por Nombre\n";
-            cout << "2.Por numero telefonico\n";
-            cout << "Seleccione una opcion de ordenamiento: ";
-            cin >> opcionOrdenamiento;
-
-            if (opcionOrdenamiento == 1) {
-                ordenarPorNombre(contactos_pricipales);
-
-                cout << "La lista de contactos ordenada por nombre es:\n";
-                // Usamos 'contacto' (o una referencia 'contacto&') para iterar
-                for (const contacto& c : contactos_pricipales) {
-                    cout << "Nombre: " << c.Nombre
-                         << " | Teléfono: " << c.telefono
-                         << " | Email: " << c.email << endl;
-
-                }
-            } //cerramos opcion 1
-
-            else if (opcionOrdenamiento == 2) {
-                ordenarNumeroTelefonico(contactos_pricipales);
-                cout << "La lista de contactos por numero telefonico es:\n";
-                // Usamos 'contacto' (o una referencia 'contacto&') para iterar
-                for (const contacto& c : contactos_pricipales) {
-                    cout << "Telefono: " << c.telefono
-                         << " | Nombre: " << c.Nombre
-                         << " | Email: " << c.email << endl;
-                }
-            }//cerramos opcion 2
-        }
-        else if (opcion == 3) {
-            cout << "Busqueda Ordenada:\n"; // Agrego saltos de línea para mejor lectura
-            cout << "1.Por Nombre\n";
-            cout << "2.Por Telefono\n";
-            cout << "Seleccione una opcion de busqueda: ";
-            cin >> BusquedaOrdenada;
-
+        // Manejo de errores de entrada para la opción del menú
+        if (!(cin >> opcion)) {
+            cout << "\n Opcion Invalida. Por favor, ingrese un numero.\n";
+            cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-            if (BusquedaOrdenada == 1) {
-                string NombreBus;
-                cout << "Ingrese el nombre a buscar:\n";
-                cin >> NombreBus;
-                buscarSecuencialPorNombre(contactos_pricipales, NombreBus);
-            }
-            else if (BusquedaOrdenada == 2) {
-                int NumeroBus;
-                cout << "Ingrese el Numero que desea buscar:\n";
-                cin >> NumeroBus;
-
-                ordenarNumeroTelefonico(contactos_pricipales);
-                buscarbinariaTelefono(contactos_pricipales, NumeroBus);
-            }
-        }//cerramos opcio 3
-        else if (opcion == 4) {
-            cout << "Ingrese el nombre que desea eliminar:" << endl;
-            getline(cin, Contactoeliminacion);
-            //Llamamos a la función de eliminación del contacto
-            eliminarContacto(contactos_pricipales, Contactoeliminacion);
-        }//cerramos opcion 4
-        else if (opcion == 5) {
-            ColaContactosPendientes();
-            //Muestra el contacto que está al frente de la cola
-            if (!cola_Contactos_pendientes.empty()) {
-                cout <<" " "El contacto pendiente es:"
-                << cola_Contactos_pendientes.front().Nombre << endl;
-            }
-        }//cerramos opcion 5
-        else if (opcion == 6) {
-            TransferirContacto();
-        }
-        else if (opcion == 7) {
-            mostrarHistorial(pila);
-        }
-        else if (opcion == 8) {
-            int opcionRecorrido;
-            cout << "--Mostrar arbol de contactos--" << endl;
-            if (arbolcontacto == NULL) {
-                cout << "El arbol esta vacio, Agregue una contacto primero" << endl;
-            }else {
-                cout << "Seleccione el tipo de recorrido:\n";
-                cout << "1. Inorden (Lista alfabetica)\n";
-                cout << "2. Preorden (Muestra la estructura)\n";
-                cout << "Opcion: ";
-                cin >> opcionRecorrido;
-            }
-            if (opcionRecorrido == 1) {
-                cout << "--Contactos en orden inorden--" << endl;
-                mostrarNodos(arbolcontacto);
-            }else if (opcionRecorrido == 2) {
-                cout << "--Contactos en orden preorden--" << endl;
-                mostrarPreorden(arbolcontacto);
-            }else {
-                cout << "Opcion de reccorido no valida" << endl;
-            }
+            opcion = 0; // Para repetir el bucle
+            continue;
         }
 
-        else if (opcion == 9) {
+        //system("cls"); // Opcional, para limpiar la pantalla después de la selección
+
+        switch (opcion) {
+        case 1:
+            agregarContacto();
+            break;
+        case 2:
+            listarContactos();
+            break;
+        case 3:
+            buscarContacto();
+            break;
+        case 4:
             eliminarMenu();
+            break;
+        case 5:
+            ColaContactosPendientes();
+            if (!cola_Contactos_pendientes.empty()) {
+                cout << "El contacto pendiente al frente es: "
+                    << cola_Contactos_pendientes.front().Nombre << endl;
+            }
+            break;
+        case 6:
+            TransferirContacto();
+            break;
+        case 7:
+            mostrarHistorial(pila);
+            break;
+        case 8: {
+            int opcionRecorrido;
+            cout << "\n-- Mostrar Arbol de Contactos --\n";
+            if (arbolcontacto == NULL) {
+                cout << "El arbol esta vacio. Agregue un contacto primero.\n";
+            }
+            else {
+                cout << "1. Inorden \n";
+                cout << "2. Preorden \n";
+                cout << "Opcion: ";
+                if (cin >> opcionRecorrido) {
+                    if (opcionRecorrido == 1) {
+                        cout << "\n--- Contactos en orden Inorden ---\n";
+                        mostrarNodos(arbolcontacto);
+                    }
+                    else if (opcionRecorrido == 2) {
+                        cout << "\n--- Contactos en orden Preorden ---\n";
+                        mostrarPreorden(arbolcontacto);
+                    }
+                    else {
+                        cout << "Opcion de recorrido no valida.\n";
+                    }
+                }
+                else {
+                    cout << " Entrada invalida.\n";
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                }
+            }
+            break;
         }
-        else if (opcion == 10) {
-            cout << "Cerrando programa, Bye";
+        case 9:
+            cout << "\nCerrando programa. ¡Hasta luego! \n";
+            break;
+        default:
+            cout << "\n Opcion Invalida. Por favor, intente de nuevo.\n";
         }
-    }while (opcion != 10);
+
+        if (opcion != 9) {
+            cout << "\nPresione ENTER para continuar...";
+            // Aseguramos que el buffer esté limpio para cin.get()
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.get();
+        }
+
+    } while (opcion != 9);
+
+    return 0;
 }
