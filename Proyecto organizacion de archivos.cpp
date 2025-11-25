@@ -280,6 +280,18 @@ void ordenarPorNombre(vector<contacto>& contactos) {
             break;
     }
 }
+void eliminarMenu() {
+    if (contactos_pricipales.empty()) {
+        cout << "\nEl vector de contactos principal está vacío. No hay nada que eliminar.\n";
+        return;
+    }
+    string Contactoeliminacion;
+    cout << "\n--- Eliminar Contacto ---\n";
+    cout << "Ingrese el nombre completo del contacto que desea eliminar:\n";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, Contactoeliminacion);
+    eliminarContacto(contactos_pricipales, Contactoeliminacion);
+}
 
 int main() {
     int numeroTelefonico;
@@ -299,7 +311,8 @@ int main() {
         cout << "6:Transferir a el arreglo principal\n";
         cout << "7:Mostrar historial\n";
         cout << "8:Mostrar Arbol\n";
-        cout << "9:Salir\n";
+        cout << "9:Limpiar\n";
+        cout << "10:Salir\n";
         cout << "Seleccione una opcion:\n";
         cin >> opcion;
 
@@ -425,7 +438,10 @@ int main() {
         }
 
         else if (opcion == 9) {
+            eliminarMenu();
+        }
+        else if (opcion == 10) {
             cout << "Cerrando programa, Bye";
         }
-    }while (opcion != 9);
+    }while (opcion != 10);
 }
